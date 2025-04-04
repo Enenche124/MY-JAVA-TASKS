@@ -1,4 +1,3 @@
-//import javax.sound.midi.Soundbank;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,19 +5,12 @@ public class BankeBank {
      private final List<BankeAccounts> accounts = new ArrayList<>();
 
 
-     public boolean createAccount(String firstname, String lastname, String pin, String email,
-                                  double balance, double deposit, double withdrawal ) {
-          if (!firstname.isEmpty() && !lastname.isEmpty() && pin.length() == 4 && pin.matches("[0-9]{4}") && !email.isEmpty()) {
-               for (BankeAccounts account : accounts) {
-                    if (account.getEmail().equals(email)) {
-                         throw new IllegalArgumentException("Wrong email, Try another email");
-                    }
-               }
-          } else {
-               throw new IllegalArgumentException("Firstname and lastname are required and pin are required");
+     public boolean createAccount(String firstname, String lastname, String pin) {
+          if (!firstname.isEmpty() && !lastname.isEmpty() && pin.length() == 4 && pin.matches("[0-9]{4}")) {
+
           }
 
-          BankeAccounts account1 = new BankeAccounts(firstname, lastname, pin, email, balance, deposit, withdrawal);
+          BankeAccounts account1 = new BankeAccounts(firstname, lastname, pin);
           accounts.add(account1);
           return true;
      }
@@ -62,8 +54,10 @@ public class BankeBank {
                throw new IllegalArgumentException("Account is empty");
           }else {
                for (BankeAccounts account : accounts) {
-                    if (account.getDeposit() >= amount || account.getDeposit() > 0) {
-                         account.setBalance(account.getBalance() + amount);
+                    if (account.getDeposit() >= amount ||
+                            account.getDeposit() > 0) {
+                         account.setBalance(account.getBalance()
+                                 + amount);
                     }
 
                }
