@@ -19,9 +19,9 @@ public class BankeBankTest {
     public void testThatMultipleUserCanCreateAccount() {
         BankeBank bank = new BankeBank();
         bank.createAccount("Josh", "Enenche", "2235");
-        bank.createAccount("James", "Heinz", "2235");
-        bank.createAccount("James", "Heinz", "2235");
-        bank.createAccount("James", "Heinz", "2235");
+        bank.createAccount("James", "Heinz", "4444");
+        bank.createAccount("James", "Heinz", "5555");
+        bank.createAccount("James", "Heinz", "6532");
         assertEquals( 4, bank.size());
     }
 
@@ -54,6 +54,30 @@ public class BankeBankTest {
         bank.deposit("2235", 2000);
        bank.withdraw("2235", 1000);
         assertEquals(1000, bank.accountBalance("2235"));
+   }
+
+   @Test
+    @DisplayName("Test that users can check their account balance")
+    public void testThatUsersCanCheckTheirAccountBalance() {
+        BankeBank bank = new BankeBank();
+        bank.createAccount("Josh", "Enenche", "2235");
+        bank.deposit("2235", 20000);
+        bank.withdraw("2235", 15000);
+        bank.checkAccountBalance("2235");
+        assertEquals(5000, bank.accountBalance("2235"));
+   }
+
+   @Test
+    @DisplayName("Test that users can transfer money from their account to another account")
+    public void testThatUsersCanTransferMoneyFromTheirAccountToAnotherAccount() {
+        BankeBank bank = new BankeBank();
+        bank.createAccount("Josh", "Enenche", "2235");
+        bank.createAccount("Nicholas", "Enenche", "2231");
+        bank.deposit("2235", 20000);
+        bank.transferMoney("2235", "2231", 6000);
+        assertEquals(6000, bank.accountBalance("2231"));
+
+
    }
 
 }

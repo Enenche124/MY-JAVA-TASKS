@@ -6,14 +6,22 @@ public class BankeBank {
      private final List<BankeAccounts> accounts = new ArrayList<>();
 
      public void createAccount(String firstname, String lastname, String pin) {
-          if (!firstname.trim().isEmpty() && !lastname.trim().isEmpty() && pin.length() == 4 && pin.matches("[0-9]{4}")) {
-               if (!accounts.contains(pin)) {
-                    BankeAccounts newAccount = new BankeAccounts(firstname, lastname, pin);
-                    accounts.add(newAccount);
-                    return;
+          if (firstname == null || firstname.trim().isEmpty()) {
+               throw new IllegalArgumentException("Firstname cannot be empty");
+          }
+          if (lastname == null || lastname.trim().isEmpty()) {
+               throw new IllegalArgumentException("Lastname cannot be empty");
+          }
+          if (pin == null || pin.length() != 4 || !pin.matches("[0-9]{4}")) {
+               throw new IllegalArgumentException("Pin must be a valid 4 digit number");
+          }
+
+          for (BankeAccounts account : accounts) {
+               if (account.getPin().equals(pin)) {
+                    throw new IllegalArgumentException("Account already exists, please choose a different pin");
                }
           }
-          throw new IllegalArgumentException("Firstname and lastname and pin are required");
+          accounts.add(new BankeAccounts(firstname, lastname, pin));
      }
 
      public boolean isEmpty() {
@@ -74,4 +82,44 @@ public class BankeBank {
      }
 
 
+     public double checkAccountBalance(String pin) {
+          for (BankeAccounts account : accounts) {
+               if (account.getPin().equals(pin)) {
+                    return account.getBalance();
+
+
+               }
+          }
+          throw new IllegalArgumentException("Account not found, Check your pin and try again");
+
+     }
+
+     public void transferMoney(String fromPin, String toPin, double amount) {
+          if(amount < 0) {
+               throw new IllegalArgumentException("You can't transfer negative amount");
+          }
+          if (fromPin == null || fromPin.length() < 4 || !fromPin.matches("[0-9]{4}")) {
+               throw new IllegalArgumentException("Incorrect pin");
+          }
+          if (toPin == null || toPin.length() < 4) {
+               throw new IllegalArgumentException("Incorrect pin");
+          }
+          if (fromPin.equals(toPin)) {
+               throw new IllegalArgumentException("Incorrect pin, Receiver pin and Sender pin cannot be the same");
+          }
+
+          for (BankeAccounts account : accounts) {
+               if (account.getPin().equals(fromPin)) {
+                    account.setBalance(account.getBalance() - amount);
+                    return;
+               }
+          }
+          for (BankeAccounts account : accounts) {
+               if (account.getPin().equals(toPin)) {
+                    account.setBalance(account.getBalance() + amount);
+                    return;
+               }
+          }
+          throw new IllegalArgumentException("Account not found, Check your pin and try again");
+     }
 }
