@@ -3,11 +3,7 @@ public class BankeAccounts {
     private final String firstname;
     private final String lastname;
     private String pin;
-
     private double balance;
-
-
-
 
     public BankeAccounts(String firstname, String lastname, String pin) {
         this.firstname = firstname;
@@ -38,9 +34,7 @@ public class BankeAccounts {
             this.balance = balance;
         }
     }
-//    public double getDeposit() {
-//        return deposit;
-//    }
+
 
     public void deposit(double deposit) {
         if (deposit  < 0) {
@@ -50,18 +44,22 @@ public class BankeAccounts {
         }
     }
 
-//    public double getWithdrawal() {
-//        return withdrawal;
-//    }
 
-    public void setWithdrawal(double withdrawalAmount) {
+    public void setWithdrawal(double withdrawalAmount, String newPin) {
         if (withdrawalAmount > balance) {
             throw new IllegalArgumentException("Insufficient balance");
         }else if (withdrawalAmount < 0) {
             throw new IllegalArgumentException("Withdrawal can't be negative");
         }else {
-            this.balance -= withdrawalAmount;
+            if (newPin.equals(this.pin)) {
+                this.balance -= withdrawalAmount;
+            }
         }
+    }
+
+    public String uniqueIdentifier(String firstname, String lastname, String pin) {
+        return firstname + "_"+ lastname + "_" + pin;
+
     }
 
 
