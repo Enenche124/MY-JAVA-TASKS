@@ -99,27 +99,35 @@ public class BankeBank {
                throw new IllegalArgumentException("You can't transfer negative amount");
           }
           if (fromPin == null || fromPin.length() < 4 || !fromPin.matches("[0-9]{4}")) {
-               throw new IllegalArgumentException("Incorrect pin");
+               throw new IllegalArgumentException("Incorrect pin, please enter a valid 4 digit number");
           }
-          if (toPin == null || toPin.length() < 4) {
-               throw new IllegalArgumentException("Incorrect pin");
+          if (toPin == null || toPin.length() < 4 || !toPin.matches("[0-9]{4}")) {
+               throw new IllegalArgumentException("Incorrect pin, please enter a valid 4 digit number");
           }
           if (fromPin.equals(toPin)) {
                throw new IllegalArgumentException("Incorrect pin, Receiver pin and Sender pin cannot be the same");
           }
 
+          BankeAccounts sender = null, receiver = null;
           for (BankeAccounts account : accounts) {
                if (account.getPin().equals(fromPin)) {
-                    account.setBalance(account.getBalance() - amount);
-                    return;
+                    sender = account;
                }
-          }
-          for (BankeAccounts account : accounts) {
                if (account.getPin().equals(toPin)) {
-                    account.setBalance(account.getBalance() + amount);
-                    return;
+                    receiver = account;
+               }
+               if (sender != null && receiver != null) {
+                    break;
                }
           }
-          throw new IllegalArgumentException("Account not found, Check your pin and try again");
+
+          if(sender == null) {
+               throw new IllegalArgumentException("Sender account not found");
+          }
+          if(receiver == null) {
+               throw new IllegalArgumentException("Receiver account not found");
+          }
+          sender.setBalance(sender.getBalance() - amount);
+          receiver.setBalance(receiver.getBalance() + amount);
      }
 }

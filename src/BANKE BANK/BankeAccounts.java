@@ -57,11 +57,5 @@ public class BankeAccounts {
         }
     }
 
-    public String uniqueIdentifier(String firstname, String lastname, String pin) {
-        return firstname + "_"+ lastname + "_" + pin;
-
-    }
-
-
 
 }

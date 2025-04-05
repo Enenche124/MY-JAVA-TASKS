@@ -76,8 +76,6 @@ public class BankeBankTest {
         bank.deposit("2235", 20000);
         bank.transferMoney("2235", "2231", 6000);
         assertEquals(6000, bank.accountBalance("2231"));
-
-
    }
 
 }
