@@ -78,4 +78,15 @@ public class BankeBankTest {
         assertEquals(6000, bank.accountBalance("2231"));
    }
 
+   @Test
+    @DisplayName("Test that users can change their pin")
+    public void testThatUsersCanChangeTheirPin() {
+        BankeBank bank = new BankeBank();
+        bank.createAccount("Josh", "Enenche", "2235");
+        bank.changePin("2235", "5646");
+        bank.deposit("5646", 20000);
+        assertEquals(20000, bank.accountBalance("5646"));
+
+   }
+
 }

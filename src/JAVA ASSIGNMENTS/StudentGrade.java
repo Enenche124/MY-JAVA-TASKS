@@ -214,25 +214,20 @@ public class StudentGrade{
             }
         }
         System.out.printf("%s %d %s %d %s%n","The hardest subject is subject", (hardestSubject + 1), "With", failure, "Failures");
-        System.out.printf("%s %d %s %d %s%n","The easiest Subject is subject", (easiestSubject + 1), "With", passed, "passes");
+        System.out.printf("%s %d %s %d %s%n","The easiest Subject is subject", (easiestSubject + 1), "With", passed+1, "passes");
 
         System.out.printf("%s %d %s %d %s %.2f%n","The Overall Highest Score is scored by Student", (winner + 1), "in subject", (winnerSub + 1), "Scoring", overallHighScore);
         System.out.printf("%s %d %s %d %s %.2f%n", "The Overall lowest Score is scored by Student", (loser + 1),  "in subject", (loserSub + 1), "Scoring",overallLowestScore);
 
 
 
-
-
         System.out.println("=========================================================== \n \n");
-
-
 
         System.out.println("CLASS SUMMARY");
         System.out.println("===========================================================");
 
         System.out.printf("%s %d %s %.2f%n","Best graduating student is : Student", (bestGraduatingStudent + 1), "scoring", overallStudentHighTotal);
         System.out.println("===========================================================");
-
 
 
         System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
