@@ -41,8 +41,8 @@ public class BankeBankTest {
         BankeBank bank = new BankeBank();
         bank.createAccount("Josh", "Enenche", "2235");
         bank.createAccount("Nicholas", "Enenche", "2231");
-        bank.deposit("2235", 2000);
-        bank.deposit("2231", 20000);
+        bank.deposit( 2000,"2235");
+        bank.deposit( 20000,"2231");
         assertEquals(2000, bank.accountBalance("2235"));
    }
 
@@ -51,7 +51,7 @@ public class BankeBankTest {
     public void testThatUsersCanWithdrawMoneyFromTheirAccount() {
         BankeBank bank = new BankeBank();
         bank.createAccount("Josh", "Enenche", "2235");
-        bank.deposit("2235", 2000);
+        bank.deposit( 2000,"2235");
        bank.withdraw("2235", 1000);
         assertEquals(1000, bank.accountBalance("2235"));
    }
@@ -61,7 +61,7 @@ public class BankeBankTest {
     public void testThatUsersCanCheckTheirAccountBalance() {
         BankeBank bank = new BankeBank();
         bank.createAccount("Josh", "Enenche", "2235");
-        bank.deposit("2235", 20000);
+        bank.deposit( 20000,"2235");
         bank.withdraw("2235", 15000);
         bank.checkAccountBalance("2235");
         assertEquals(5000, bank.accountBalance("2235"));
@@ -73,7 +73,7 @@ public class BankeBankTest {
         BankeBank bank = new BankeBank();
         bank.createAccount("Josh", "Enenche", "2235");
         bank.createAccount("Nicholas", "Enenche", "2231");
-        bank.deposit("2235", 20000);
+        bank.deposit( 20000,"2235");
         bank.transferMoney("2235", "2231", 6000);
         assertEquals(6000, bank.accountBalance("2231"));
    }
@@ -84,9 +84,11 @@ public class BankeBankTest {
         BankeBank bank = new BankeBank();
         bank.createAccount("Josh", "Enenche", "2235");
         bank.changePin("2235", "5646");
-        bank.deposit("5646", 20000);
+        bank.deposit( 20000, "5646");
         assertEquals(20000, bank.accountBalance("5646"));
 
    }
+
+
 
 }

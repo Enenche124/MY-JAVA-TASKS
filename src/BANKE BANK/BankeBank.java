@@ -1,15 +1,15 @@
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class BankeBank {
-     private final List<BankeAccounts> accounts = new ArrayList<>();
+     public final List<BankeAccounts> accounts = new ArrayList<>();
+     private final Set<String> existingAccountNumber = new HashSet<>();
 
-     public void createAccount(String firstname, String lastname, String pin) {
-          if (firstname == null || firstname.trim().isEmpty()) {
+     public long createAccount(String firstname, String lastname, String pin) {
+          if (firstname == null || firstname.trim().isEmpty()){
                throw new IllegalArgumentException("Firstname cannot be empty");
           }
+
           if (lastname == null || lastname.trim().isEmpty()) {
                throw new IllegalArgumentException("Lastname cannot be empty");
           }
@@ -17,12 +17,20 @@ public class BankeBank {
                throw new IllegalArgumentException("Pin must be a valid 4 digit number");
           }
 
-          for (BankeAccounts account : accounts) {
-               if (account.getPin().equals(pin)) {
-                    throw new IllegalArgumentException("Account already exists, please choose a different pin");
-               }
+          Random random = new Random();
+          long accountNumber;
+          do {
+               accountNumber = random.nextLong(1000000000L) + 9000000000L;
+
           }
-          accounts.add(new BankeAccounts(firstname, lastname, pin));
+          while (existingAccountNumber.contains(String.valueOf(accountNumber)));
+          BankeAccounts newAccount = new BankeAccounts(firstname, lastname, pin, accountNumber);
+          existingAccountNumber.add(String.valueOf(accountNumber));
+
+
+          System.out.println(accountNumber);
+          accounts.add(newAccount);
+          return accountNumber;
      }
 
      public boolean isEmpty() {
@@ -34,19 +42,23 @@ public class BankeBank {
      }
 
      public void closeAccount(String pin) {
-          Iterator<BankeAccounts> iterating = accounts.iterator();
-          while (iterating.hasNext()) {
-               BankeAccounts account = iterating.next();
-               if (account.getPin().equals(pin)) {
-                    iterating.remove();
-                    return;
-               }
-          }
-//         accounts.removeIf(account -> account.getPin().equals(pin));
+//          Iterator<BankeAccounts> iterating = accounts.iterator();
+//          while (iterating.hasNext()) {
+//               BankeAccounts account = iterating.next();
+//               if (account.getPin().equals(pin)) {
+//                    iterating.remove();
+//                    return;
+//               }
+//          }
+        accounts.removeIf(account -> account.getPin().equals(pin));
+
 
      }
 
-     public void deposit(String pin, double amount) {
+     public void deposit(double amount, String pin) {
+         if (pin == null || pin.length() != 4 || !pin.matches("[0-9]{4}")) {
+             throw new IllegalArgumentException("Pin must be a valid 4 digit number");
+         }
           if(amount < 0) {
                throw new IllegalArgumentException("You can't deposit negative amount");
           }else {
@@ -57,10 +69,14 @@ public class BankeBank {
                     }
                }
           }
-          throw new IllegalArgumentException("Account not found, Check your pin and try again");
+          throw new IllegalArgumentException("Invalid pin, Check your pin and try again");
      }
 
      public double accountBalance(String pin) {
+         if (pin == null || pin.length() != 4 || !pin.matches("[0-9]{4}")) {
+             throw new IllegalArgumentException("Pin must be a valid 4 digit number");
+         }
+
           for (BankeAccounts account : accounts) {
                if (account.getPin().equals(pin)) {
                     return account.getBalance();
@@ -72,6 +88,9 @@ public class BankeBank {
      public void withdraw(String pin, double amount) {
           if (amount < 0) {
                throw new IllegalArgumentException("You can't withdraw negative amount");
+          }
+          if (pin == null || pin.length() != 4 || !pin.matches("[0-9]{4}")) {
+              throw new IllegalArgumentException("Pin must be a valid 4 digit number");
           }
 
           if (amount == 0) {
@@ -154,119 +173,4 @@ public class BankeBank {
 
      }
 
-
-public static void main(String[] args) {
-Scanner input = new Scanner(System.in);
-BankeBank bank = new BankeBank();
-while (true){
-     System.out.println("""
-             1. Create an account with their first name and last name and pin.
-             2. Close account.
-             3. Deposit money.
-             4. Withdraw money.
-             5. Check Account balance
-             6. Transfer from one account to another.
-             7. Change Pin
-             """);
-     int choice = 0;
-     try {
-     System.out.println("Enter your choice: ");
-     choice = input.nextInt();
-     }catch (Exception e) {
-          System.out.println("Invalid choice, Enter choice as integer between 1 - 7");
-     }
-    input.nextLine();
-          switch (choice) {
-          case 1:
-          System.out.println("Enter your first name: ");
-          String firstName = input.next();
-          System.out.println("Enter your last name: ");
-          String lastName = input.next();
-          System.out.println("Enter your pin: ");
-          String pin = input.next();
-          try {
-          bank.createAccount(firstName, lastName, pin);
-          System.out.println("Account created successfully");
-          }catch (Exception e) {
-          System.out.println(e.getMessage());
-          }
-          break;
-          case 2:
-          System.out.println("Enter your pin: ");
-          String pin2 = input.next();
-          try {
-          bank.closeAccount(pin2);
-          System.out.println("Account closed successfully");
-          }catch (Exception e) {
-          System.out.println(e.getMessage());
-          }
-          break;
-          case 3:
-          System.out.println("Enter your pin: ");
-          String pin3 = input.next();
-          System.out.println("Enter amount to be deposited: ");
-          double amount = input.nextDouble();
-          try {
-          bank.deposit(pin3,  amount);
-          System.out.println(amount + " deposited successfully");
-          }catch (Exception e){
-          System.out.println(e.getMessage());
-          }
-          break;
-          case 4:
-          System.out.println("Enter your pin: ");
-          String pin4 = input.next();
-               System.out.println("Enter amount to be withdrawn: ");
-          double amount2 = input.nextDouble();
-          try {
-               bank.withdraw(pin4, amount2);
-               System.out.println(amount2 + " withdrawn successfully");
-          }catch (Exception e){
-               System.out.println(e.getMessage());
-          }
-          break;
-          case 5:
-          System.out.println("Enter your pin: ");
-          String pin5 = input.next();
-          try {
-
-               System.out.println("Balance: " + bank.checkAccountBalance(pin5));
-          }catch (Exception e){
-               System.out.println(e.getMessage());
-          }
-          break;
-          case 6:
-               System.out.println("Enter your pin: ");
-               String pin6 = input.next();
-               System.out.println("Enter receiver pin: ");
-               String pin7 = input.next();
-               System.out.println("Enter amount to transfer: ");
-               double amount3 = input.nextDouble();
-               try {
-                    bank.transferMoney(pin6, pin7, amount3);
-                    System.out.println(amount3 + " transfer successfully");
-               }catch (Exception e){
-                    System.out.println(e.getMessage());
-               }
-               break;
-               case 7:
-                    System.out.println("Enter your pin: ");
-                    String pin8 = input.next();
-                    System.out.println("Enter new pin: ");
-                    String pin9 = input.next();
-                    try {
-
-                         bank.changePin(pin8, pin9);
-                         System.out.println("Your pin has change successfully");
-                    }catch (Exception e){
-                         System.out.println(e.getMessage());
-                    }
-                    break;
-                    default:
-                         System.out.println("Invalid choice");
-                         break;
-
-     }
-          }
-     }
 }
