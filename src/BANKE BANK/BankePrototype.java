@@ -17,10 +17,10 @@ public class BankePrototype {
              5. Check Account balance
              6. Transfer from one account to another.
              7. Change Pin
-             8. Exit the program.
+             0. Exit the program.
              
              """);
-            int choice = 0;
+            int choice = -1;
             try {
                 System.out.println("Enter your choice: ");
                 choice = input.nextInt();
@@ -33,37 +33,25 @@ public class BankePrototype {
                 case 1:
 
                     System.out.println("Enter your first name: ");
-                    String firstName = input.next().trim();
-                    while (true) {
-                        if (!firstName.matches("[a-zA-Z\\s]+") || firstName.length() > 20 || firstName.length() <= 1) {
-                            System.out.printf("%n%s%n","First name must be a valid letter, please enter a valid letter ranging from 2 and above, But less than 20");
-                            firstName = input.next();
-                        }else {
-                            break;
-                        }
+                    String firstName = input.nextLine().trim();
+                    while (!firstName.matches("[a-zA-Z\\s\\-']+") || firstName.length() <= 1) {
+                        System.out.println("Enter a valid first name: ");
+                        firstName = input.nextLine().trim();
                     }
-
                     System.out.println("Enter your last name: ");
-                    String lastName = input.next();
-                    while (true) {
-                        if (lastName.length() <= 1 || !lastName.matches("[a-zA-Z\\s]+") || lastName.length() > 20) {
-                            System.out.printf("%n%s%n","Last name must be a valid letter, please enter a last name ranging from 2 and above, But less than 20");
-                            lastName = input.next();
-                        }else {
-                            break;
-                        }
+                    String lastName = input.nextLine().trim();
+                    while (lastName.length() <= 1 || !lastName.matches("[a-zA-Z\\s\\-']+")) {
+                        System.out.println("Enter a valid last name: ");
+                        lastName = input.nextLine().trim();
+                    }
 
-                    }
                     System.out.println("Enter your pin: ");
-                    String pin = input.next();
-                    while (true) {
-                        if (pin.length() <= 1 || !pin.matches("[0-9]{4}")) {
-                            System.out.printf("%n%s%n","Invalid, Pin must be a valid 4 digit number ");
-                            pin = input.next();
-                        }else {
-                            break;
-                        }
+                    String pin = input.nextLine().trim();
+                    while (!pin.matches("[0-9]{4}") || pin.length() < 4) {
+                        System.out.println("Enter a valid 4 digits pin: ");
+                        pin = input.nextLine().trim();
                     }
+
                     try {
                         bank.createAccount(firstName, lastName, pin);
                         String accountNumber = bank.createAccount(firstName, lastName, pin);
@@ -87,20 +75,21 @@ public class BankePrototype {
                 case 3:
                     System.out.println("Enter your account number: ");
                     String accountNumber2 = input.next();
+                    while (!accountNumber2.matches("[0-9]{10}")) {
+                        System.out.println("Enter a valid account number: ");
+                        accountNumber2 = input.nextLine().trim();
+                    }
                     System.out.println("Enter amount to be deposited: ");
                     double amount = input.nextDouble();
 
 
                     System.out.println("Enter your pin: ");
                     String pin3 = input.next();
-                    while (true){
-                        if (pin3.length() <= 1 || !pin3.matches("[0-9]{4}")) {
-                            System.out.printf("%n%s%n","Invalid, Pin must be a valid 4 digit number ");
-                            pin3 = input.next();
-                        }else {
-                            break;
-                        }
+                    while (!pin3.matches("[0-9]{4}")) {
+                        System.out.println("Enter a valid pin: ");
+                        pin3 = input.nextLine().trim();
                     }
+
 
                     try {
                         bank.deposit(accountNumber2, amount, pin3);
@@ -130,7 +119,7 @@ public class BankePrototype {
                     String pin5 = input.next();
                     try {
 
-                        System.out.printf("%n%s%,.2f%%s%n", "Balance: ", bank.accountBalance(accountNumber3, pin5));
+                        System.out.print("Balance: " +   bank.accountBalance(accountNumber3, pin5));
                     }catch (Exception e){
                         System.out.println(e.getMessage());
                     }
@@ -140,10 +129,11 @@ public class BankePrototype {
                     String fromAccountNumber = input.next();
                     System.out.println("Enter receiver account number: ");
                     String toAccountNumber = input.next();
-                    System.out.println("Enter receiver pin: ");
-                    String fromPin = input.next();
                     System.out.println("Enter amount to transfer: ");
                     double amount3 = input.nextDouble();
+                    System.out.println("Enter your pin: ");
+                    String fromPin = input.next();
+
                     try {
                         bank.transferMoney(fromAccountNumber, toAccountNumber, amount3, fromPin);
                         System.out.printf("%n%s%,.2f%n", "You have successfully transferred ", amount3);
@@ -152,19 +142,21 @@ public class BankePrototype {
                     }
                     break;
                 case 7:
+                    System.out.println("Enter your account number: ");
+                    String accountNumber4 = input.next();
                     System.out.println("Enter your pin: ");
-                    String pin8 = input.next();
+                    String oldPin = input.next();
                     System.out.println("Enter new pin: ");
-                    String pin9 = input.next();
+                    String newPin = input.next();
                     try {
 
-                        bank.changePin(pin8, pin9);
+                        bank.changePin(accountNumber4, oldPin, newPin);
                         System.out.printf("%n%s%n", "Your pin has been changed successfully");
                     }catch (Exception e){
                         System.out.println(e.getMessage());
                     }
                     break;
-                case 8:
+                case 0:
                     System.out.println("Exiting the program....");
                     break;
                 default:
@@ -173,7 +165,7 @@ public class BankePrototype {
 
             }
 
-            if (choice == 8)break;
+            if (choice == 0)break;
         }
     }
 

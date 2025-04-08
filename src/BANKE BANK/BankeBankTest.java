@@ -83,9 +83,9 @@ public class BankeBankTest {
     public void testThatUsersCanChangeTheirPin() {
         BankeBank bank = new BankeBank();
         bank.createAccount("Josh", "Enenche", "2235");
-        bank.changePin("2235", "5646");
-        bank.deposit( "1443256792",20000, "5646");
-        assertEquals(20000, bank.accountBalance("6478932493","5646"));
+        bank.changePin("9647234956","2235", "5646");
+        bank.deposit( "9647234956",20000, "5646");
+        assertEquals(20000, bank.accountBalance("9647234956","5646"));
 
    }
 
