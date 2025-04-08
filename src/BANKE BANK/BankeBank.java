@@ -5,12 +5,13 @@ public class BankeBank {
      public final List<BankeAccounts> accounts = new ArrayList<>();
      private final Set<String> existingAccountNumber = new HashSet<>();
 
+
      public String createAccount(String firstname, String lastname, String pin) {
           if (firstname == null || firstname.trim().isEmpty()|| !firstname.matches("[a-zA-Z\\s\\-']+")){
                throw new IllegalArgumentException("Firstname cannot be empty");
           }
 
-          if (lastname == null || lastname.trim().isEmpty() || !lastname.matches("[a-zA-Z\\s\\-']+")) {
+          if ( !lastname.matches("[a-zA-Z\\s\\-']+")) {
                throw new IllegalArgumentException("Lastname cannot be empty");
           }
           if (pin == null || pin.length() != 4 || !pin.matches("[0-9]{4}")) {
@@ -125,9 +126,7 @@ public class BankeBank {
 
 
      public void transferMoney(String fromAccountNumber, String toAccountNumber, double amount, String fromPin) {
-
           BankeAccounts sender = null, receiver = null;
-
           for (BankeAccounts account : accounts) {
                if (account.getAccountNumber().equals(fromAccountNumber) && account.getPin().equals(fromPin)) {
                     sender = account;
@@ -146,13 +145,11 @@ public class BankeBank {
 
      }
 
-
      public void changePin(String accountNumber, String pin, String newPin) {
           if (newPin == null || newPin.length() < 4 || !newPin.matches("[0-9]{4}")) {
                throw new IllegalArgumentException("Incorrect pin, please enter a valid 4 digit number");
           }
           if (newPin.equals(pin)) {
-
                throw new IllegalArgumentException("Enter a different pin not the same as the old pin");
           }
           for (BankeAccounts account : accounts) {
@@ -161,8 +158,7 @@ public class BankeBank {
                     return;
                }
           }
-          throw new IllegalArgumentException("Account not found, Check your pin and try again");
-
+          throw new IllegalArgumentException("Account not found, Review your pin and account number and try again");
      }
 
 }

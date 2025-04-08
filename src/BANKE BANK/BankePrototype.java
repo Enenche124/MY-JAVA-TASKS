@@ -6,7 +6,6 @@ public class BankePrototype {
         Scanner input = new Scanner(System.in);
         BankeBank bank = new BankeBank();
 
-
         while (true){
             System.out.println("""
              
@@ -21,13 +20,16 @@ public class BankePrototype {
              
              """);
             int choice = -1;
-            try {
-                System.out.println("Enter your choice: ");
-                choice = input.nextInt();
-            }catch (Exception e) {
-                System.out.println("Invalid choice, Enter choice as integer between 1 - 8");
-            }
-            input.nextLine();
+
+                try {
+                    System.out.println("Enter your choice: ");
+                   choice = input.nextInt();
+                }catch (Exception e) {
+                    System.out.println("Invalid choice, Enter choice as integer between 1 - 8");
+                }
+
+
+//            input.nextLine();
 
             switch (choice) {
                 case 1:
@@ -64,7 +66,11 @@ public class BankePrototype {
                     break;
                 case 2:
                     System.out.println("Enter your pin: ");
-                    String pin2 = input.next();
+                    String pin2 = input.nextLine().trim();
+                    while (!pin2.matches("[0-9]{4}") ) {
+                        System.out.println("Enter a 4 valid pin: ");
+                        pin2 = input.nextLine().trim();
+                    }
                     try {
                         bank.closeAccount(pin2);
                         System.out.printf("%n%s%n", "Your account has been closed successfully");
@@ -79,8 +85,17 @@ public class BankePrototype {
                         System.out.println("Enter a valid account number: ");
                         accountNumber2 = input.nextLine().trim();
                     }
+
+                    double amount;
+                    while (true){
+                        try {
                     System.out.println("Enter amount to be deposited: ");
-                    double amount = input.nextDouble();
+                    amount = input.nextDouble();
+                    break;
+                        }catch (Exception e) {
+                            System.out.println("Enter a valid integer amount for deposit");
+                        }
+                    }
 
 
                     System.out.println("Enter your pin: ");
@@ -99,12 +114,33 @@ public class BankePrototype {
                     }
                     break;
                 case 4:
+
                     System.out.println("Enter your account number: ");
-                    String withdrawAccountNumber = input.next();
+                    String withdrawAccountNumber = input.nextLine().trim();
+                    while (!withdrawAccountNumber.matches("[0-9]{10}")) {
+                        System.out.println("Enter a valid account number: ");
+                        withdrawAccountNumber = input.nextLine().trim();
+                    }
+
+                    double amount2;
+                    while (true) {
+                        try {
+                            System.out.println("Enter amount to be withdrawn: ");
+                            amount2 = input.nextDouble();
+                            break;
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+
                     System.out.println("Enter your pin: ");
                     String pin4 = input.next();
-                    System.out.println("Enter amount to be withdrawn: ");
-                    double amount2 = input.nextDouble();
+
+                    while (!pin4.matches("[0-9]{4}")) {
+                        System.out.println("Enter a 4 valid pin: ");
+                        pin4 = input.nextLine().trim();
+                    }
+
                     try {
                         bank.withdraw(withdrawAccountNumber,  amount2, pin4);
                         System.out.printf("%n%s%,.2f%n", "You have successfully withdrawn ", amount2);
@@ -113,10 +149,19 @@ public class BankePrototype {
                     }
                     break;
                 case 5:
+
                     System.out.println("Enter your account number: ");
                     String accountNumber3 = input.next();
+                    while (!accountNumber3.matches("[0-9]{10}")) {
+                        System.out.println("Enter a valid account number: ");
+                        accountNumber3 = input.nextLine().trim();
+                    }
                     System.out.println("Enter your pin: ");
                     String pin5 = input.next();
+                    while (!pin5.matches("[0-9]{4}")) {
+                        System.out.println("Enter a valid pin: ");
+                        pin5 = input.nextLine().trim();
+                    }
                     try {
 
                         System.out.print("Balance: " +   bank.accountBalance(accountNumber3, pin5));
@@ -127,12 +172,32 @@ public class BankePrototype {
                 case 6:
                     System.out.println("Enter your account number: ");
                     String fromAccountNumber = input.next();
+                    while (!fromAccountNumber.matches("[0-9]{10}")) {
+                        System.out.println("Enter a valid account number: ");
+                        fromAccountNumber = input.nextLine().trim();
+                    }
                     System.out.println("Enter receiver account number: ");
                     String toAccountNumber = input.next();
+                    while (!toAccountNumber.matches("[0-9]{10}")) {
+                        System.out.println("Enter a valid receiver account number: ");
+                        toAccountNumber = input.nextLine().trim();
+                    }
+                    double amount3;
+                    while (true){
+                        try {
                     System.out.println("Enter amount to transfer: ");
-                    double amount3 = input.nextDouble();
+                     amount3 = input.nextDouble();
+                     break;
+                        }catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
                     System.out.println("Enter your pin: ");
                     String fromPin = input.next();
+                    while (!fromPin.matches("[0-9]{4}")) {
+                        System.out.println("Enter a valid pin: ");
+                        fromPin = input.nextLine().trim();
+                    }
 
                     try {
                         bank.transferMoney(fromAccountNumber, toAccountNumber, amount3, fromPin);
@@ -144,10 +209,22 @@ public class BankePrototype {
                 case 7:
                     System.out.println("Enter your account number: ");
                     String accountNumber4 = input.next();
-                    System.out.println("Enter your pin: ");
+                    while (!accountNumber4.matches("[0-9]{10}")) {
+                        System.out.println("Enter a valid account number: ");
+                        accountNumber4 = input.nextLine().trim();
+                    }
+                    System.out.println("Enter your old pin: ");
                     String oldPin = input.next();
+                    while (!oldPin.matches("[0-9]{4}")) {
+                        System.out.println("Enter a valid pin: ");
+                        oldPin = input.nextLine().trim();
+                    }
                     System.out.println("Enter new pin: ");
                     String newPin = input.next();
+                    while (!newPin.matches("[0-9]{4}")) {
+                        System.out.println("Enter a 4 valid pin: ");
+                        newPin = input.nextLine().trim();
+                    }
                     try {
 
                         bank.changePin(accountNumber4, oldPin, newPin);
