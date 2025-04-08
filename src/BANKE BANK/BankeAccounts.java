@@ -1,14 +1,13 @@
 import java.util.Random;
 
 public class BankeAccounts {
-    private String firstname;
-    private String lastname;
-    private final long accountNumber;
+    private final String firstname;
+    private final String lastname;
+    private final String accountNumber;
     private String pin;
     private double balance;
 
-    public BankeAccounts(String firstname, String lastname, String pin, long accountNumber) {
-
+    public BankeAccounts(String firstname, String lastname, String pin, String accountNumber) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.pin = pin;
@@ -64,7 +63,7 @@ public void  setWithdrawal(double withdrawalAmount, String newPin) {
         }
     }
 
-public long getAccountNumber(){
+public String getAccountNumber(){
         return accountNumber;
 }
 

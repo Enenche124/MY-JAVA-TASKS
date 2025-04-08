@@ -10,7 +10,7 @@ public class BankePrototype {
         while (true){
             System.out.println("""
              
-             1. Create an account with their first name and last name and pin.
+             1. Create an account.
              2. Close account.
              3. Deposit money.
              4. Withdraw money.
@@ -36,7 +36,7 @@ public class BankePrototype {
                     String firstName = input.next().trim();
                     while (true) {
                         if (!firstName.matches("[a-zA-Z\\s]+") || firstName.length() > 20 || firstName.length() <= 1) {
-                            System.out.printf("%n%s","First name must be a valid letter, please enter a valid letter ranging from 2 and above, But less than 20");
+                            System.out.printf("%n%s%n","First name must be a valid letter, please enter a valid letter ranging from 2 and above, But less than 20");
                             firstName = input.next();
                         }else {
                             break;
@@ -66,7 +66,7 @@ public class BankePrototype {
                     }
                     try {
                         bank.createAccount(firstName, lastName, pin);
-                        long accountNumber = bank.createAccount(firstName, lastName, pin);
+                        String accountNumber = bank.createAccount(firstName, lastName, pin);
                         System.out.printf("%n%s%s %s%n","Account created successfully for ", firstName, lastName);
                         System.out.println("Your account number is " + accountNumber);
 
@@ -85,6 +85,8 @@ public class BankePrototype {
                     }
                     break;
                 case 3:
+                    System.out.println("Enter your account number: ");
+                    String accountNumber2 = input.next();
                     System.out.println("Enter amount to be deposited: ");
                     double amount = input.nextDouble();
 
@@ -101,45 +103,50 @@ public class BankePrototype {
                     }
 
                     try {
-                        bank.deposit(amount, pin3);
-                        System.out.printf("%n%s%,.2f%n", "You have successfully deposited ", amount);
+                        bank.deposit(accountNumber2, amount, pin3);
+                        System.out.printf("%n%s%,.2f%s%s%n", "You have successfully deposited ", amount, " to ", accountNumber2);
                     }catch (Exception e){
                         System.out.println(e.getMessage());
                     }
                     break;
                 case 4:
+                    System.out.println("Enter your account number: ");
+                    String withdrawAccountNumber = input.next();
                     System.out.println("Enter your pin: ");
                     String pin4 = input.next();
                     System.out.println("Enter amount to be withdrawn: ");
                     double amount2 = input.nextDouble();
                     try {
-                        bank.withdraw(pin4, amount2);
+                        bank.withdraw(withdrawAccountNumber,  amount2, pin4);
                         System.out.printf("%n%s%,.2f%n", "You have successfully withdrawn ", amount2);
                     }catch (Exception e){
                         System.out.println(e.getMessage());
                     }
                     break;
                 case 5:
+                    System.out.println("Enter your account number: ");
+                    String accountNumber3 = input.next();
                     System.out.println("Enter your pin: ");
                     String pin5 = input.next();
                     try {
 
-                        System.out.printf("%n%s%,.2f", "Balance: ", bank.checkAccountBalance(pin5));
+                        System.out.printf("%n%s%,.2f%%s%n", "Balance: ", bank.accountBalance(accountNumber3, pin5));
                     }catch (Exception e){
                         System.out.println(e.getMessage());
                     }
                     break;
                 case 6:
-                    System.out.println("Enter your pin: ");
-                    String pin6 = input.next();
+                    System.out.println("Enter your account number: ");
+                    String fromAccountNumber = input.next();
+                    System.out.println("Enter receiver account number: ");
+                    String toAccountNumber = input.next();
                     System.out.println("Enter receiver pin: ");
-                    String pin7 = input.next();
+                    String fromPin = input.next();
                     System.out.println("Enter amount to transfer: ");
                     double amount3 = input.nextDouble();
                     try {
-                        bank.transferMoney(pin6, pin7, amount3);
-                        pin7 = bank.accounts.getLast().getFirstname();
-                        System.out.printf("%n%s%,.2f%s%s%n", "You have successfully transferred ", amount3, " to ", pin7);
+                        bank.transferMoney(fromAccountNumber, toAccountNumber, amount3, fromPin);
+                        System.out.printf("%n%s%,.2f%n", "You have successfully transferred ", amount3);
                     }catch (Exception e){
                         System.out.println(e.getMessage());
                     }
