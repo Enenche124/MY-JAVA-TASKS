@@ -5,12 +5,21 @@ public class Users {
 
 
     public Users(String userName, String userGender, int age) {
-        if (userName == null || !userName.matches("^[a-zA-Z]+$\n")) {
+        if (userName == null || !userName.matches("[a-zA-Z\\s\\-']+")) {
             throw new IllegalArgumentException("Invalid user name, Please enter a valid name");
         }
-        if (userGender == null || !userGender.equalsIgnoreCase("Female")) {
+
+        if (userName.length() < 2 || userName.length() > 15) {
+            throw new IllegalArgumentException("Invalid user name, Username must be between 2 and 15 characters");
+        }
+        if (userGender.equalsIgnoreCase("Male")) {
+            throw new IllegalArgumentException("Ode You don't have period");
+        }
+
+        if (!userGender.equalsIgnoreCase("Female")) {
             throw new IllegalArgumentException("Invalid gender, Please enter a (female) valid gender");
         }
+
         if (age < 0) {
             throw new IllegalArgumentException("Invalid age, Age must be a positive integer");
         }
