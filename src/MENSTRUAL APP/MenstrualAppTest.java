@@ -86,7 +86,17 @@ public class MenstrualAppTest {
         LocalDate expectedDate = LocalDate.of(2025, 4, 27);
         assertEquals( expectedDate, cycle.safePeriodBeforeOvulation());
     }
+    @Test
+    @DisplayName("Test for next ovulation")
 
+    public void testForNextOvulation() {
+        Users user = new Users("Mary", "female", 11);
+        LocalDate startDate = LocalDate.of(2025, 4, 18);
+        LocalDate endDate = LocalDate.of(2025, 4, 21);
+        Cycle cycle = new Cycle(startDate, endDate, 28);
+        LocalDate expectedDate = LocalDate.of(2025, 5, 2);
+        assertEquals(expectedDate, cycle.nextOvulationDate());
+    }
     @Test
     @DisplayName("Test for safe period after ovulation")
     public void testForSafePeriodAfterOvulation() {
@@ -97,7 +107,6 @@ public class MenstrualAppTest {
         LocalDate expectedDate = LocalDate.of(2025, 5, 7);
         assertEquals( expectedDate, cycle.safePeriodAfterOvulation());
     }
-    @Test
-    @DisplayName("Te")
+
 
 }
