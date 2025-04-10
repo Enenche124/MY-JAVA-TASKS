@@ -41,45 +41,48 @@ public class BankeBank {
           return accounts.size();
      }
 
-     public void closeAccount(String pin) {
-//          Iterator<BankeAccounts> iterating = accounts.iterator();
-//          while (iterating.hasNext()) {
-//               BankeAccounts account = iterating.next();
-//               if (account.getPin().equals(pin)) {
-//                    iterating.remove();
-//                    return;
-//               }
-//          }
-        accounts.removeIf(account -> account.getPin().equals(pin));
+     public boolean closeAccount(String pin) {
+          Iterator<BankeAccounts> iterating = accounts.iterator();
+          while (iterating.hasNext()) {
+               BankeAccounts account = iterating.next();
+               if (account.getPin().equals(pin)) {
+                    iterating.remove();
+                    return true;
+               }
+          }
+//       accounts.removeIf(account -> account.getPin().equals(pin));
 
-
+return false;
      }
 
      public void deposit(String accountNumber, double amount, String pin) {
-          if (accountNumber == null || accountNumber.trim().isEmpty()) {
-               throw new IllegalArgumentException("Account number cannot be empty");
-          }
-          if (!accountNumber.matches("[0-9]{10}")) {
-               throw new IllegalArgumentException("Account number must be a valid 10 digit number");
-          }
+          if (!closeAccount(pin)) {
 
-         if (!pin.matches("[0-9]{4}")) {
-             throw new IllegalArgumentException("Pin must be a valid 4 digit number");
-         }
 
-          if(amount < 0) {
-               throw new IllegalArgumentException("You can't deposit negative amount");
-          }
+               if (accountNumber == null || accountNumber.trim().isEmpty()) {
+                    throw new IllegalArgumentException("Account number cannot be empty");
+               }
+               if (!accountNumber.matches("[0-9]{10}")) {
+                    throw new IllegalArgumentException("Account number must be a valid 10 digit number");
+               }
 
-                  for (BankeAccounts account : accounts) {
+               if (!pin.matches("[0-9]{4}")) {
+                    throw new IllegalArgumentException("Pin must be a valid 4 digit number");
+               }
+
+               if (amount < 0) {
+                    throw new IllegalArgumentException("You can't deposit negative amount");
+               }
+
+               for (BankeAccounts account : accounts) {
                     if (account.getAccountNumber().equals(accountNumber) && account.getPin().equals(pin)) {
                          account.deposit(accountNumber, amount, pin);
-                        return;
+                         return;
 
                     }
                }
-
-          throw new IllegalArgumentException("Invalid PIN, Check your PIN and try again");
+          }
+          throw new IllegalArgumentException("Account does not exist");
      }
 
      public double accountBalance(String accountNumber, String pin) {
@@ -96,29 +99,31 @@ public class BankeBank {
      }
 
      public void withdraw(String accountNumber, double amount, String pin) {
-          if (amount < 0) {
-               throw new IllegalArgumentException("You can't withdraw negative amount");
-          }
-          if (!accountNumber.matches("[0-9]{10}")) {
-               throw new IllegalArgumentException("Account number must be a valid 10 digit number");
-          }
-          if (pin == null || pin.length() != 4 || !pin.matches("[0-9]{4}")) {
-              throw new IllegalArgumentException("Pin must be a valid 4 digit number");
-          }
+          if (!closeAccount(pin)) {
+               if (amount < 0) {
+                    throw new IllegalArgumentException("You can't withdraw negative amount");
+               }
+               if (!accountNumber.matches("[0-9]{10}")) {
+                    throw new IllegalArgumentException("Account number must be a valid 10 digit number");
+               }
+               if (pin == null || pin.length() != 4 || !pin.matches("[0-9]{4}")) {
+                    throw new IllegalArgumentException("Pin must be a valid 4 digit number");
+               }
 
-          if (amount == 0) {
-               throw new IllegalArgumentException("You can't withdraw zero amount");
-          }
+               if (amount == 0) {
+                    throw new IllegalArgumentException("You can't withdraw zero amount");
+               }
 
-          if (amount > accountBalance(accountNumber, pin)) {
-               throw new IllegalArgumentException("Insufficient balance");
-          }
+               if (amount > accountBalance(accountNumber, pin)) {
+                    throw new IllegalArgumentException("Insufficient balance");
+               }
 
-          for (BankeAccounts account : accounts) {
-               if (account.getPin().equals(pin)) {
-                   account.withdrawal(accountNumber, amount, pin);
-                   return;
+               for (BankeAccounts account : accounts) {
+                    if (account.getPin().equals(pin)) {
+                         account.withdrawal(accountNumber, amount, pin);
+                         return;
 
+                    }
                }
           }
           throw new IllegalArgumentException("Account not found, Check your pin and try again");
@@ -126,23 +131,27 @@ public class BankeBank {
 
 
      public void transferMoney(String fromAccountNumber, String toAccountNumber, double amount, String fromPin) {
-          BankeAccounts sender = null, receiver = null;
-          for (BankeAccounts account : accounts) {
-               if (account.getAccountNumber().equals(fromAccountNumber) && account.getPin().equals(fromPin)) {
-                    sender = account;
+          if (!closeAccount(fromPin)) {
+               if (amount <= 0) {
+                    throw new IllegalArgumentException("Transfer must be greater than zero");
                }
-               if (account.getAccountNumber().equals(toAccountNumber)) {
-                    receiver = account;
+               BankeAccounts sender = null, receiver = null;
+               for (BankeAccounts account : accounts) {
+                    if (account.getAccountNumber().equals(fromAccountNumber) && account.getPin().equals(fromPin)) {
+                         sender = account;
+                    }
+                    if (account.getAccountNumber().equals(toAccountNumber)) {
+                         receiver = account;
+                    }
                }
+               if (sender == null) {
+                    throw new IllegalArgumentException("Sender does not exist");
+               }
+               if (receiver == null) {
+                    throw new IllegalArgumentException("Receiver does not exist");
+               }
+               sender.transferMoney(sender, receiver, amount, fromPin);
           }
-          if (sender == null){
-               throw new IllegalArgumentException("Sender not found");
-          }
-          if (receiver == null){
-               throw new IllegalArgumentException("Receiver not found");
-          }
-      sender.transferMoney(sender, receiver, amount, fromPin);
-
      }
 
      public void changePin(String accountNumber, String pin, String newPin) {

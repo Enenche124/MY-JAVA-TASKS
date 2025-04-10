@@ -1,5 +1,3 @@
-import java.util.Random;
-
 public class BankeAccounts {
     private final String firstname;
     private final String lastname;
@@ -85,6 +83,7 @@ public void  withdrawal(String accountNumber, double withdrawalAmount, String wi
         if(amount > this.balance) {
             throw new IllegalArgumentException("Insufficient balance");
         }
+
 
         this.balance -= amount;
         toAccountNumber.balance += amount;
