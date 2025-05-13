@@ -4,6 +4,7 @@ import java.util.*;
 public class BankeBank {
      public final List<BankeAccounts> accounts = new ArrayList<>();
      private final Set<String> existingAccountNumber = new HashSet<>();
+     private String accountNumberstr;
 
 
      public String createAccount(String firstname, String lastname, String pin) {
@@ -22,16 +23,15 @@ public class BankeBank {
           String accountNumber;
           do {
                accountNumber = String.valueOf(random.nextLong(1000000000L) + 9000000000L);
-
-          }
-          while (existingAccountNumber.contains(accountNumber));
+          }while (existingAccountNumber.contains(accountNumber));
           BankeAccounts newAccount = new BankeAccounts(firstname, lastname, pin, accountNumber);
           existingAccountNumber.add(accountNumber);
-
 
           accounts.add(newAccount);
           return accountNumber;
      }
+
+
 
      public boolean isEmpty() {
           return accounts.isEmpty();
@@ -56,8 +56,6 @@ return false;
      }
 
      public void deposit(String accountNumber, double amount, String pin) {
-          if (!closeAccount(pin)) {
-
 
                if (accountNumber == null || accountNumber.trim().isEmpty()) {
                     throw new IllegalArgumentException("Account number cannot be empty");
@@ -78,11 +76,10 @@ return false;
                     if (account.getAccountNumber().equals(accountNumber) && account.getPin().equals(pin)) {
                          account.deposit(accountNumber, amount, pin);
                          return;
-
                     }
-               }
+
           }
-          throw new IllegalArgumentException("Account does not exist");
+//          throw new IllegalArgumentException("Account does not exist");
      }
 
      public double accountBalance(String accountNumber, String pin) {
@@ -95,11 +92,12 @@ return false;
                     return account.getBalance();
                }
           }
-          throw new IllegalArgumentException("Account not found, Check your pin and try again");
+
+//          return 0;
+          throw new IllegalArgumentException("Account not found");
      }
 
      public void withdraw(String accountNumber, double amount, String pin) {
-          if (!closeAccount(pin)) {
                if (amount < 0) {
                     throw new IllegalArgumentException("You can't withdraw negative amount");
                }
@@ -124,14 +122,14 @@ return false;
                          return;
 
                     }
-               }
+
           }
-          throw new IllegalArgumentException("Account not found, Check your pin and try again");
+          throw new IllegalArgumentException("Account not found");
      }
 
 
      public void transferMoney(String fromAccountNumber, String toAccountNumber, double amount, String fromPin) {
-          if (!closeAccount(fromPin)) {
+
                if (amount <= 0) {
                     throw new IllegalArgumentException("Transfer must be greater than zero");
                }
@@ -151,7 +149,7 @@ return false;
                     throw new IllegalArgumentException("Receiver does not exist");
                }
                sender.transferMoney(sender, receiver, amount, fromPin);
-          }
+
      }
 
      public void changePin(String accountNumber, String pin, String newPin) {

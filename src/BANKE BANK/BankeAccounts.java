@@ -96,4 +96,27 @@ public String getAccountNumber(){
 }
 
 
+    public void changePin(String accountNumber, String oldPin, String newPin) {
+        if (accountNumber.length() != 10 ) {
+            throw new IllegalArgumentException("Invalid account number, Enter 10 digits only");
+
+        }
+        if (oldPin == null || oldPin.isEmpty()) {
+            throw new IllegalArgumentException("Old pin cannot be empty");
+        }
+        if (newPin == null || newPin.isEmpty()) {
+            throw new IllegalArgumentException("New pin cannot be empty");
+        }
+        if (!this.accountNumber.equals(accountNumber)) {
+            throw new IllegalArgumentException("Account number does not match");
+        }
+        if (!oldPin.equals(this.pin)) {
+            throw new IllegalArgumentException("Old pin does not match");
+        }
+        if(newPin.equals(oldPin)) {
+            throw new IllegalArgumentException("New pin cannot be the same");
+        }
+        this.pin = newPin;
+
+    }
 }

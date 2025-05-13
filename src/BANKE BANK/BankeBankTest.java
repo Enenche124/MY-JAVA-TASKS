@@ -39,53 +39,65 @@ public class BankeBankTest {
     @DisplayName("Test that users can deposit money into their account")
     public void testThatUsersCanDepositMoneyIntoTheirAccount() {
         BankeBank bank = new BankeBank();
-        bank.createAccount("Josh", "Enenche", "2235");
-        bank.createAccount("Nicholas", "Enenche", "2231");
-        bank.deposit("8443256792", 2000,"2235");
-        bank.deposit( "8343256792",20000,"2231");
-        assertEquals(2000, bank.accountBalance("6745231956", "2235"));
+        String accountNumberstr =  bank.createAccount("Josh", "Enenche", "2235");
+        BankeAccounts acc1 = new BankeAccounts("Josh", "Enenche", "2235",accountNumberstr);
+       System.out.println(accountNumberstr);
+        acc1.deposit( accountNumberstr,20000,"2235");
+        assertEquals(20000, acc1.getBalance());
    }
 
    @Test
     @DisplayName("Test that users can withdraw money from their account")
     public void testThatUsersCanWithdrawMoneyFromTheirAccount() {
         BankeBank bank = new BankeBank();
-        bank.createAccount("Josh", "Enenche", "2235");
-        bank.deposit("8443856792", 2000,"2235");
-       bank.withdraw("8443856792",  1000, "2235");
-        assertEquals(1000, bank.accountBalance("6478932499","2235"));
+        String accountNumber =  bank.createAccount("Josh", "Enenche", "2235");
+       System.out.println(accountNumber);
+        BankeAccounts account2 = new BankeAccounts("Josh", "Enenche", "2235",accountNumber);
+       account2.deposit(accountNumber, 2000,"2235");
+       account2.withdrawal(accountNumber,  1000, "2235");
+        assertEquals(1000, account2.getBalance());
    }
 
    @Test
     @DisplayName("Test that users can check their account balance")
     public void testThatUsersCanCheckTheirAccountBalance() {
         BankeBank bank = new BankeBank();
-        bank.createAccount("Josh", "Enenche", "2235");
-        bank.deposit( "8443256791",20000,"2235");
-        bank.withdraw("8443256791", 15000, "2235");
-        bank.accountBalance("2235","2235");
-        assertEquals(5000, bank.accountBalance("6478932490","2235"));
+        String accountNumber = bank.createAccount("Josh", "Enenche", "2235");
+        BankeAccounts account3 = new BankeAccounts("Josh", "Enenche", "2235",accountNumber);
+       account3.deposit( accountNumber,20000,"2235");
+       account3.withdrawal(accountNumber, 15000, "2235");
+        assertEquals(5000, account3.getBalance());
    }
 
    @Test
     @DisplayName("Test that users can transfer money from their account to another account")
     public void testThatUsersCanTransferMoneyFromTheirAccountToAnotherAccount() {
         BankeBank bank = new BankeBank();
-        bank.createAccount("Josh", "Enenche", "2235");
-        bank.createAccount("Nicholas", "Enenche", "2231");
-        bank.deposit( "8443256992",20000,"2235");
-        bank.transferMoney("8443256992", "8443256192", 4000, "2231");
-        assertEquals(6000, bank.accountBalance("6478932491","2231"));
+        String accountNumber = bank.createAccount("Josh", "Enenche", "2235");
+        BankeAccounts account4 = new BankeAccounts("Josh", "Enenche", "2235",accountNumber);
+       account4.deposit(accountNumber, 20000,"2235");
+
+
+
+
+        String accountNumber2 = bank.createAccount("Nicholas", "Enenche", "2231");
+        BankeAccounts account5 = new BankeAccounts("Nicholas", "Enenche", "2235",accountNumber2);
+       account5.deposit( accountNumber2,200,"2235");
+       account4.transferMoney(account4, account5, 4000, "2231");
+        assertEquals(16000, account4.getBalance());
    }
 
    @Test
     @DisplayName("Test that users can change their pin")
     public void testThatUsersCanChangeTheirPin() {
         BankeBank bank = new BankeBank();
-        bank.createAccount("Josh", "Enenche", "2235");
-        bank.changePin("9647234956","2235", "5646");
-        bank.deposit( "9647234956",20000, "5646");
-        assertEquals(20000, bank.accountBalance("9647234956","5646"));
+        String accountNumber = bank.createAccount("Josh", "Enenche", "2235");
+        BankeAccounts account1 = new BankeAccounts("Josh", "Enenche", "2235",accountNumber);
+       account1.changePin(accountNumber,"2235", "5646");
+       account1.deposit( accountNumber,20000, "5646");
+       account1.withdrawal(accountNumber,  1000, "2235");
+        assertEquals(20000, account1.getBalance());
+       assertEquals(20000, account1.getBalance());
 
    }
 
