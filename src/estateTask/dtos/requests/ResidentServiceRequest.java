@@ -1,14 +1,13 @@
 package estateTask.dtos.requests;
 
-
-import estateTask.services.ResidentService;
-
 public class ResidentServiceRequest {
     private String fullName;
     private String phoneNumber;
     private String address;
+    private long id;
 
     public String getFullName() {
+
         return fullName;
     }
 
@@ -30,5 +29,11 @@ public class ResidentServiceRequest {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+    public long getId() {
+        return id;
+    }
+    public void setId(long id) {
+        this.id = id;
     }
 }

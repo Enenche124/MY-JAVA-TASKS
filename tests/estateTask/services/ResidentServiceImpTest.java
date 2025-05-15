@@ -2,7 +2,6 @@ package estateTask.services;
 
 import estateTask.dtos.requests.ResidentServiceRequest;
 import estateTask.dtos.responses.ResidentServiceResponse;
-import estateTask.models.Resident;
 import estateTask.repository.ResidentRepository;
 import estateTask.repository.Residents;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,29 +12,27 @@ import static org.junit.jupiter.api.Assertions.*;
 class ResidentServiceImpTest {
 
     private ResidentRepository residentRepository;
-    private ResidentService residentServices;
+    private ResidentService residentService;
 
     @BeforeEach
     void setUp() {
         residentRepository = new Residents();
-        residentServices = new ResidentServiceImp();
+        residentService = new ResidentServiceImp(residentRepository);
     }
 
     @Test
     public void testThatRegisterResidentMethodWorks() {
-        Resident resident = new Resident();
-        ResidentServiceRequest residentServiceRequest = new ResidentServiceRequest();
+        ResidentServiceRequest request = new ResidentServiceRequest();
+        request.setFullName("Mary Smith");
+        request.setAddress("Semicolon Africa");
+        request.setPhoneNumber("555-555-5555");
 
-        residentServiceRequest.setFullName("Mary Smith");
-        residentServiceRequest.setAddress("Semicolon Africa");
-        residentServiceRequest.setPhoneNumber("555-555-5555");
+        ResidentServiceResponse response = residentService.register(request);
 
-        resident.setResidentName(residentServiceRequest.getFullName());
-        resident.setResidentAddress(residentServiceRequest.getAddress());
-        resident.setPhoneNumber(residentServiceRequest.getPhoneNumber());
+        assertNotNull(response);
+        assertEquals("Mary Smith", response.getFullName());
+       assertEquals(1, response.getId());
 
-        residentRepository.save(resident);
         assertEquals(1, residentRepository.count());
-
     }
 }

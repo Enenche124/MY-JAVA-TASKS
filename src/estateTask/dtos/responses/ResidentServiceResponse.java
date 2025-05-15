@@ -1,12 +1,9 @@
 package estateTask.dtos.responses;
 
-
-import estateTask.services.ResidentService;
-
 public class ResidentServiceResponse {
     private String fullName;
     private String address;
-    private String email;
+private String email;
     private long id;
 
     public String getFullName() {

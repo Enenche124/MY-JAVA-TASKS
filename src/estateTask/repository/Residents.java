@@ -18,7 +18,7 @@ public class Residents implements ResidentRepository {
        return resident;
     }
 
-    public void update(Resident resident) {
+    private void update(Resident resident) {
         for(int i = 0; i<residents.size(); i++){
             if(residents.get(i).getResidentId() == resident.getResidentId()){
                 residents.set(i, resident);
@@ -43,12 +43,8 @@ public class Residents implements ResidentRepository {
 
     @Override
     public void delete(Resident resident) {
-        for (Resident r : residents) {
-            if(r.getResidentId() == resident.getResidentId()){
-                residents.remove(r);
-                return;
-            }
-        }
+        residents.removeIf(r -> r.getResidentId() == resident.getResidentId());
+
 
     }
 
