@@ -1,11 +1,13 @@
-package estateTask.models;
+package estateApp.data.models;
 
 public class Resident {
+
     private String residentName;
-    private String residentAddress;
+    private String residentHouseNo;
     private String phoneNumber;
+    private String email;
     private long  residentId;
-    private Visitor visitor;
+//    private Visitor visitor;
 
     public String getResidentName() {
         return residentName;
@@ -15,12 +17,12 @@ public class Resident {
         this.residentName = residentName;
     }
 
-    public String getResidentAddress() {
-        return residentAddress;
+    public String getResidentHouseNo() {
+        return residentHouseNo;
     }
 
-    public void setResidentAddress(String residentAddress) {
-        this.residentAddress = residentAddress;
+    public void setResidentHouseNo(String residentHouseNo) {
+        this.residentHouseNo = residentHouseNo;
     }
 
     public String getPhoneNumber() {
@@ -39,11 +41,10 @@ public class Resident {
         this.residentId = residentId;
     }
 
-    public Visitor getVisitor() {
-        return visitor;
+    public String getEmail() {
+        return email;
     }
-
-    public void setVisitor(Visitor visitor) {
-        this.visitor = visitor;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
